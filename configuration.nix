@@ -149,12 +149,23 @@
     spotify
   ];
 
+  fonts.packages = with pkgs; [
+    noto-fonts-color-emoji
+    commit-mono
+    jetbrains-mono
+    fira-code-nerdfont
+  ];
+
   environment.sessionVariables = {
     FREETYPE_PROPERTIES = "cff:no-stem-darkening=0 autofitter:no-stem-darkening=0";
   };
 
 
   programs.fzf.keybindings = true;
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+  };
 
   # Install firefox.
   programs.firefox.enable = true;
