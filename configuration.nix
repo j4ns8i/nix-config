@@ -13,6 +13,7 @@
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
+  # boot.loader.systemd-boot.enable = true;
 
   networking.hostName = "proton"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -58,8 +59,8 @@
   };
 
   # TODO: this has no effect
-  # services.xserver.autoRepeatDelay = 220;
-  # services.xserver.autoRepeatInterval = 30;
+  # services.xserver.autoRepeatDelay = 440;
+  # services.xserver.autoRepeatInterval = 60;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -89,7 +90,6 @@
     description = "Justin Smalkowski";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-    #  thunderbird
     ];
   };
 
@@ -142,19 +142,19 @@
     # python311Packages.virtualenv
 
     # apps
-    kitty
-    alacritty
-    firefox
-    obsidian
-    spotify
+    # kitty
+    # alacritty
+    # firefox
+    # obsidian
+    # spotify
   ];
 
-  fonts.packages = with pkgs; [
-    noto-fonts-color-emoji
-    commit-mono
-    jetbrains-mono
-    fira-code-nerdfont
-  ];
+  # fonts.packages = with pkgs; [
+  #   noto-fonts-color-emoji
+  #   commit-mono
+  #   jetbrains-mono
+  #   fira-code-nerdfont
+  # ];
 
   environment.sessionVariables = {
     FREETYPE_PROPERTIES = "cff:no-stem-darkening=0 autofitter:no-stem-darkening=0";
