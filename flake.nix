@@ -1,21 +1,34 @@
 {
-  description = "A very basic flake";
+  description = "j4ns8i's multi-system NixOS config";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
   };
 
-  outputs = { self, nixpkgs }: {
-    nixosConfigurations = {
-      proton = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-          ./hardware-configuration.nix
-        ];
+  outputs = { self, nixpkgs, ...} @ inputs:
+    let
+      commonModules = name: [
+	{
+	  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+	  networking.hostName = name;
+	}
+      ];
+      mkSystem = name: cfg: nixpkgs.lib.nixosSystem {
+	system = cfg.system or "x86_64-linux";
+	modules = (commonModules name) ++ (cfg.modules or []);
+	specialArgs = inputs;
       };
+      systems = {
+	proton-3 = {
+	  modules = [
+	    ./configuration.nix
+	    ./hardware-configuration.nix
+	  ];
+	};
+      };
+    in {
+      nixosConfigurations = nixpkgs.lib.mapAttrs mkSystem systems;
     };
-  };
 }
 
 # vim: set sw=2 :
