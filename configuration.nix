@@ -87,8 +87,13 @@
   };
 
   # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "j4ns8i";
+  services.displayManager = {
+    autoLogin = {
+      enable = true;
+      user = "j4ns8i";
+    };
+    defaultSession = "cinnamon2d";
+  };
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;
@@ -119,6 +124,7 @@
     neovim
     zoxide
     gomplate
+    home-manager
 
     # programming languages
     # python311
@@ -135,11 +141,7 @@
     # python311Packages.virtualenv
 
     # apps
-    kitty
     alacritty
-    firefox
-    obsidian
-    spotify
   ];
 
   fonts.packages = with pkgs; [
@@ -158,12 +160,6 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-  };
-
-  # Install firefox.
-  programs.firefox.enable = true;
-  programs.firefox.preferences = {
-    "general.autoScroll" = true;
   };
 
   # Some programs need SUID wrappers, can be configured further or are
