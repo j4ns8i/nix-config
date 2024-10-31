@@ -130,10 +130,15 @@
   ];
 
   fonts.packages = with pkgs; [
+    noto-fonts
     noto-fonts-color-emoji
     commit-mono
     jetbrains-mono
     fira-code-nerdfont
+
+    # system sans-serif typefaces
+    public-sans
+    inter
   ];
 
   environment.sessionVariables = {
