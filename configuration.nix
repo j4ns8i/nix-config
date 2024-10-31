@@ -123,22 +123,7 @@
     numlockx
     neovim
     zoxide
-    gomplate
     home-manager
-
-    # programming languages
-    # python311
-    (python311.withPackages(ps: with ps; [ pip virtualenv zlib ]))
-    pyenv
-    pipx
-    poetry
-    rustup
-    go
-    nodejs_22
-    pnpm_9
-    nodePackages.neovim
-    # python311Packages.pip
-    # python311Packages.virtualenv
 
     # apps
     alacritty
