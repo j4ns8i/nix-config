@@ -44,8 +44,18 @@
   services.xserver.enable = true;
 
   # Display Manager / Desktop Environment
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.cinnamon.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome = {
+    enable = true;
+    extraGSettingsOverrides = ''
+      [org.gnome.desktop.peripherals.keyboard]
+      repeat-interval=30
+      delay=220
+
+      [org.gnome.desktop.input-sources]
+      xkb-options=['terminate:ctrl_alt_bksp','caps:swapescape']
+    '';
+  };
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -92,7 +102,6 @@
       enable = true;
       user = "j4ns8i";
     };
-    defaultSession = "cinnamon2d";
   };
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
