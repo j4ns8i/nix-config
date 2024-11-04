@@ -54,6 +54,18 @@
 
       [org.gnome.desktop.input-sources]
       xkb-options=['terminate:ctrl_alt_bksp','caps:swapescape']
+
+      [org.gnome.desktop.interface]
+      color-scheme='prefer-dark'
+      font-name='Public Sans 12'
+      document-font-name='Public Sans 11'
+
+      [org.gnome.desktop.background]
+      picture-uri-dark='${pkgs.gnome-backgrounds}/share/backgrounds/gnome/amber-d.jxl'
+      picture-uri='${pkgs.gnome-backgrounds}/share/backgrounds/gnome/amber-l.jxl'
+
+      [org.gnome.shell]
+      favorite-apps=['firefox.desktop','Alacritty.desktop','org.gnome.Calendar.desktop','org.gnome.Nautilus.desktop','org.gnome.Settings.desktop']
     '';
   };
 
