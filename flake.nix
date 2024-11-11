@@ -8,23 +8,23 @@
   outputs = { self, nixpkgs, ...} @ inputs:
     let
       commonModules = name: [
-	{
-	  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-	  networking.hostName = name;
-	}
+        {
+          nix.settings.experimental-features = [ "nix-command" "flakes" ];
+          networking.hostName = name;
+        }
       ];
       mkSystem = name: cfg: nixpkgs.lib.nixosSystem {
-	system = cfg.system or "x86_64-linux";
-	modules = (commonModules name) ++ (cfg.modules or []);
-	specialArgs = inputs;
+        system = cfg.system or "x86_64-linux";
+        modules = (commonModules name) ++ (cfg.modules or []);
+        specialArgs = inputs;
       };
       systems = {
-	proton-3 = {
-	  modules = [
-	    ./configuration.nix
-	    ./hardware-configuration.nix
-	  ];
-	};
+        proton-3 = {
+          modules = [
+            ./configuration.nix
+            ./hardware-configuration.nix
+          ];
+        };
       };
     in {
       nixosConfigurations = nixpkgs.lib.mapAttrs mkSystem systems;
