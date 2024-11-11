@@ -8,8 +8,7 @@
   outputs = { self, nixpkgs, ...} @ inputs:
     let
       commonModules = name: [
-        {
-          nix.settings.experimental-features = [ "nix-command" "flakes" ];
+        (import ./common.nix) {
           networking.hostName = name;
         }
       ];
