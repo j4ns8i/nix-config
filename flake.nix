@@ -21,8 +21,7 @@
       systems = {
         proton-3 = {
           modules = [
-            ./configuration.nix
-            ./hardware-configuration.nix
+            ./machines/proton
           ];
         };
       };
