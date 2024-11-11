@@ -3,29 +3,43 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, ...} @ inputs:
+  outputs = { self, nix-darwin, nixpkgs, ... } @ inputs:
     let
       commonModules = name: [
         (import ./common.nix) {
           networking.hostName = name;
         }
       ];
-      mkSystem = name: cfg: nixpkgs.lib.nixosSystem {
+      mkNixOSSystem = name: cfg: nixpkgs.lib.nixosSystem {
         system = cfg.system or "x86_64-linux";
         modules = (commonModules name) ++ (cfg.modules or []);
         specialArgs = inputs;
       };
-      systems = {
+      mkNixDarwinSystem = name: cfg: nix-darwin.lib.darwinSystem {
+        modules = cfg.modules;
+        specialArgs = { inherit self; inherit nix-darwin; };
+      };
+      nixOSSystems = {
         proton-3 = {
           modules = [
             ./machines/proton
           ];
         };
       };
+      nixDarwinSystems = {
+        YJ0VNX32G2 = {
+          modules = [
+            ./machines/macarm
+          ];
+        };
+      };
     in {
-      nixosConfigurations = nixpkgs.lib.mapAttrs mkSystem systems;
+      nixosConfigurations = nixpkgs.lib.mapAttrs mkNixOSSystem nixOSSystems;
+      darwinConfigurations = nixpkgs.lib.mapAttrs mkNixDarwinSystem nixDarwinSystems;
     };
 }
 
