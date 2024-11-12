@@ -29,6 +29,11 @@
             ./machines/proton
           ];
         };
+        laptar-2 = {
+          modules = [
+            ./machines/laptar
+          ];
+        };
       };
       nixDarwinSystems = {
         YJ0VNX32G2 = {
