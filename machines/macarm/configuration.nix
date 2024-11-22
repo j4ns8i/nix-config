@@ -99,6 +99,7 @@
       "tilt"
       "tree-sitter"
       "unibilium"
+      "watch"
       "webp"
       "xorgproto"
       "xxhash"
