@@ -102,7 +102,7 @@
   users.users.j4ns8i = {
     isNormalUser = true;
     description = "Justin Smalkowski";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
   };
 
   # Enable automatic login for the user.
@@ -167,12 +167,8 @@
     enableCompletion = true;
   };
 
-  systemd.units."user@.service" = {
+  virtualisation.docker = {
     enable = true;
-    text = ''
-      [Service]
-      delegate = yes
-    '';
   };
 
   # Some programs need SUID wrappers, can be configured further or are
