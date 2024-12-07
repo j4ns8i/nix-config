@@ -65,6 +65,10 @@
       favorite-apps=['firefox.desktop','Alacritty.desktop','org.gnome.Calendar.desktop','org.gnome.Nautilus.desktop','org.gnome.Settings.desktop']
     '';
   };
+  services.xserver.desktopManager.gnome.sessionPath = [
+    pkgs.gnome-tweaks
+    pkgs.mint-cursor-themes
+  ];
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -147,6 +151,9 @@
 
     # apps
     alacritty
+
+    gnome-tweaks
+    mint-cursor-themes
   ];
 
   fonts.packages = with pkgs; [
