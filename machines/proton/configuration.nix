@@ -111,6 +111,7 @@
     isNormalUser = true;
     description = "Justin Smalkowski";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
+    shell = pkgs.zsh;
   };
 
   # Enable automatic login for the user.

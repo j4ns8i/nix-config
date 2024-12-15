@@ -103,6 +103,7 @@
     isNormalUser = true;
     description = "Justin Smalkowski";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;
   };
 
   # Enable automatic login for the user.
