@@ -114,6 +114,7 @@
 
     casks = [
       "alacritty"
+      "ghostty"
       "kitty"
       "obsidian"
       "slack"

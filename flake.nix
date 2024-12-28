@@ -36,7 +36,7 @@
         };
       };
       nixDarwinSystems = {
-        YJ0VNX32G2 = {
+        "justinsmalkowski-YJ0VNX32G2" = {
           modules = [
             ./machines/macarm
           ];
