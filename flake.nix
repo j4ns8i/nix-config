@@ -2,12 +2,13 @@
   description = "j4ns8i's multi-system NixOS config";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    ghostty.url = "github:ghostty-org/ghostty";
   };
 
-  outputs = { self, nix-darwin, nixpkgs, ... } @ inputs:
+  outputs = { self, nix-darwin, nixpkgs, ghostty, ... } @ inputs:
     let
       commonModules = name: [
         (import ./common.nix) {
