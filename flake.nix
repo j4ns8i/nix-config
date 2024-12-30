@@ -16,7 +16,12 @@
           map (filename: (toString ./modules) + "/${filename}")
               (attrNames (readDir ./modules))
           ++ (cfg.modules or []);
-        specialArgs = inputs // { setupCfg.hostname = name; };
+        specialArgs = inputs // {
+          setupCfg = {
+            inherit (cfg) user;
+            hostname = name;
+          };
+        };
       };
       mkNixDarwinSystem = name: cfg: nix-darwin.lib.darwinSystem {
         modules = cfg.modules;
@@ -27,11 +32,13 @@
           modules = [
             ./machines/proton
           ];
+          user = "j4ns8i";
         };
         laptar-2 = {
           modules = [
             ./machines/laptar
           ];
+          user = "j4ns8i";
         };
       };
       nixDarwinSystems = {
@@ -39,6 +46,7 @@
           modules = [
             ./machines/macarm
           ];
+          user = "justin.smalkowski";
         };
       };
     in {
