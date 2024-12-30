@@ -10,15 +10,13 @@
 
   outputs = { self, nix-darwin, nixpkgs, ghostty, ... } @ inputs:
     let
-      commonModules = name: [
-        (import ./common.nix) {
-          networking.hostName = name;
-        }
-      ];
       mkNixOSSystem = name: cfg: nixpkgs.lib.nixosSystem {
         system = cfg.system or "x86_64-linux";
-        modules = (commonModules name) ++ (cfg.modules or []);
-        specialArgs = inputs;
+        modules = with builtins;
+          map (filename: (toString ./modules) + "/${filename}")
+              (attrNames (readDir ./modules))
+          ++ (cfg.modules or []);
+        specialArgs = inputs // { setupCfg.hostname = name; };
       };
       mkNixDarwinSystem = name: cfg: nix-darwin.lib.darwinSystem {
         modules = cfg.modules;
