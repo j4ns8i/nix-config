@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, ghostty, ... }:
 
 {
   # Bootloader.
@@ -62,7 +62,7 @@
       picture-uri='${pkgs.gnome-backgrounds}/share/backgrounds/gnome/amber-l.jxl'
 
       [org.gnome.shell]
-      favorite-apps=['firefox.desktop','Alacritty.desktop','org.gnome.Calendar.desktop','org.gnome.Nautilus.desktop','org.gnome.Settings.desktop']
+      favorite-apps=['firefox.desktop','com.mitchellh.ghostty.desktop','org.gnome.Calendar.desktop','org.gnome.Nautilus.desktop','org.gnome.Settings.desktop']
     '';
   };
 
@@ -145,6 +145,8 @@
     # apps
     alacritty
     firefox
+
+    ghostty.packages.x86_64-linux.default
   ];
 
   fonts.packages = with pkgs; [
