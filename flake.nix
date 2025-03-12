@@ -2,9 +2,11 @@
   description = "j4ns8i's multi-system NixOS config";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
-    nix-darwin.url = "github:LnL7/nix-darwin";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     ghostty.url = "github:ghostty-org/ghostty";
   };

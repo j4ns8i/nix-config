@@ -3,6 +3,7 @@
     neovim
     home-manager
 
+    libiconv
     zlib
   ];
 
@@ -122,13 +123,9 @@
     ];
   };
 
-  programs.zsh = {
-    enable = true;
-    loginShellInit = "eval \"$(/opt/homebrew/bin/brew shellenv)\"";
-  };
+  programs.zsh.enable = true;
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  nix.settings.experimental-features = "nix-command flakes";
 
   # Set Git commit hash for darwin-version.
   system.configurationRevision = self.rev or self.dirtyRev or null;
