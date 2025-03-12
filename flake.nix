@@ -5,10 +5,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     ghostty.url = "github:ghostty-org/ghostty";
   };
 
-  outputs = { self, nix-darwin, nixpkgs, ghostty, ... } @ inputs:
+  outputs = { self, nix-darwin, nixpkgs, nixos-wsl, ghostty, ... } @ inputs:
     let
       mkNixOSSystem = name: cfg: nixpkgs.lib.nixosSystem {
         system = cfg.system or "x86_64-linux";
@@ -37,6 +38,13 @@
         laptar-2 = {
           modules = [
             ./machines/laptar
+          ];
+          user = "j4ns8i";
+        };
+        woos = {
+          modules = [
+            nixos-wsl.nixosModules.default
+            ./machines/woos
           ];
           user = "j4ns8i";
         };
