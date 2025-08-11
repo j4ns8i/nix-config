@@ -105,7 +105,6 @@
       "xorgproto"
       "xxhash"
       "xz"
-      "yq"
       "zstd"
     ];
 
