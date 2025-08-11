@@ -123,7 +123,11 @@
     ];
   };
 
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    enableGlobalCompInit = false;
+    enableBashCompletion = false;
+  };
 
   nix.settings.experimental-features = "nix-command flakes";
 
