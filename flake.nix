@@ -58,6 +58,12 @@
           ];
           user = "justin.smalkowski";
         };
+        "yuzu" = {
+          modules = [
+            ./machines/yuzu
+          ];
+          user = "justinsmalkowski";
+        };
       };
     in {
       nixosConfigurations = nixpkgs.lib.mapAttrs mkNixOSSystem nixOSSystems;
