@@ -115,6 +115,8 @@
 
     casks = [
       "alacritty"
+      "cursor"
+      "gcloud-cli"
       "ghostty"
       "kitty"
       "obsidian"
