@@ -1,0 +1,4 @@
+**/.venv/
+**/.git/objects/
+**/node_modules/
+**/.git/
