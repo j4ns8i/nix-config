@@ -8,10 +8,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
-    ghostty.url = "github:ghostty-org/ghostty";
+    # ghostty.url = "github:ghostty-org/ghostty";
   };
 
-  outputs = { self, nix-darwin, nixpkgs, nixos-wsl, ghostty, ... } @ inputs:
+  outputs = { self, nix-darwin, nixpkgs, nixos-wsl, ... } @ inputs:
     let
       mkNixOSSystem = name: cfg: nixpkgs.lib.nixosSystem {
         system = cfg.system or "x86_64-linux";

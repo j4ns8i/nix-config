@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, pkgs, ghostty, ... }:
+{ inputs, pkgs, ... }:
 
 {
   # Bootloader.
@@ -18,6 +18,20 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  networking.networkmanager.dns = "none"; # use dnsmasq
+  services.dnsmasq = {
+    enable = true;
+    settings = {
+      server = [
+        "1.1.1.1"         # CloudFlare
+        "9.9.9.9"         # Quad9
+        "8.8.8.8"         # Google
+        "1.0.0.1"         # CloudFlare
+        "149.112.112.112" # Quad9
+        "8.8.4.4"         # Google
+      ];
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -41,8 +55,8 @@
   services.xserver.enable = true;
 
   # Display Manager / Desktop Environment
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome = {
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome = {
     enable = true;
     extraGSettingsOverrides = ''
       [org.gnome.desktop.peripherals.keyboard]
@@ -80,7 +94,7 @@
   services.printing.enable = false;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -102,7 +116,7 @@
   users.users.j4ns8i = {
     isNormalUser = true;
     description = "Justin Smalkowski";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.zsh;
   };
 
@@ -126,6 +140,8 @@
     gnumake
     zlib
     gcc
+    bind
+    dnsmasq
     git
     tmux
     zsh
@@ -142,11 +158,17 @@
     zoxide
     home-manager
 
+    # zoom-us
+    # xdg-desktop-portal
+    # xdg-desktop-portal-gnome
+    # kdePackages.xdg-desktop-portal-kde
+
     # apps
     alacritty
     firefox
 
-    ghostty.packages.x86_64-linux.default
+    ghostty
+    # ghostty.packages.x86_64-linux.default
   ];
 
   fonts.packages = with pkgs; [
@@ -154,7 +176,6 @@
     noto-fonts-color-emoji
     commit-mono
     jetbrains-mono
-    fira-code-nerdfont
 
     # system sans-serif typefaces
     public-sans
@@ -171,6 +192,15 @@
     enable = true;
     package = pkgs.mullvad-vpn;
   };
+
+  virtualisation.docker.enable = true;
+
+  # systemd.tmpfiles.rules = [
+  #   "L+ /usr/share/xdg-desktop-portal/portals - - - - /run/current-system/sw/share/xdg-desktop-portal/portals "
+  #   "L+ /usr/libexec/xdg-desktop-portal-gtk - - - - ${pkgs.xdg-desktop-portal-gtk}/libexec/xdg-desktop-portal-gtk "
+  #   "L+ /usr/libexec/xdg-desktop-portal-hyprland - - - - ${pkgs.xdg-desktop-portal-hyprland}/libexec/xdg-desktop-portal-hyprland "
+  #   "L+ /usr/libexec/xdg-desktop-portal - - - - ${pkgs.xdg-desktop-portal}/libexec/xdg-desktop-portal "
+  # ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
