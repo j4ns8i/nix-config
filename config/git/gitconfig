@@ -65,8 +65,8 @@
     wt = worktree
     wtl = "worktree list"
     wtrm = "worktree remove"
-    wta = "!f() { set -e; dir=$(git rev-parse --git-common-dir)/src/$1; git worktree add --detach $dir; echo $dir; }; f"
-    wtah = "!f() { set -e; dir=$(git rev-parse --git-common-dir)/src/$1; git worktree add --detach $dir origin/HEAD; echo $dir; }; f"
+    wta = "!f() { set -e; dir=$(git rev-parse --git-common-dir)/../.local/worktrees/$1; git worktree add --detach $dir; echo $dir; }; f"
+    wtah = "!f() { set -e; dir=$(git rev-parse --git-common-dir)/../.local/worktrees/$1; git worktree add --detach $dir origin/HEAD; echo $dir; }; f"
     cane = commit --amend --no-edit
     sub = submodule
     sb = status -sb

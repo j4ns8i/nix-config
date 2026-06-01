@@ -110,6 +110,7 @@ alias -g F="| fzf --ansi"
 alias vc="nvim ~/.config/nvim -c 'cd ~/.config/nvim'"
 alias kx="kubectx"
 alias kc="kubectl --context"
+alias ob="obsidian"
 
 function ggo {
     # Go to a github organization

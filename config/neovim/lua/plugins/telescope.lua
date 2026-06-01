@@ -69,7 +69,7 @@ return {
             end,
           },
         },
-        file_ignore_patterns = { '.git/' },
+        file_ignore_patterns = { '%.git/' },
         layout_strategy = 'vertical',
       },
     }

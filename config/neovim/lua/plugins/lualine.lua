@@ -21,6 +21,23 @@ local function set_highlights()
   return theme
 end
 
+local function neotree_extension()
+  local function get_short_cwd()
+    return vim.fn.fnamemodify(vim.fn.getcwd(), ':~')
+  end
+  return {
+    sections = {
+      lualine_b = {
+        { get_short_cwd, separator = { left = '', right = '' } },
+      },
+    },
+    inactive_sections = {
+      lualine_c = { get_short_cwd },
+    },
+    filetypes = { 'neo-tree' },
+  }
+end
+
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = {
@@ -38,7 +55,7 @@ return {
       },
       sections = {
         lualine_a = {
-          { 'mode', separator = { left = '', right = '' }, fmt = function(s) return s:sub(1,1) end, padding = 0 },
+          { 'mode', separator = { left = '', right = '' }, fmt = function(s) return s:sub(1, 1) end, padding = 0 },
         },
         lualine_b = {
           { 'filename', separator = { left = '', right = '' }, newfile_status = true, path = 1, },
@@ -66,7 +83,7 @@ return {
       extensions = {
         'fugitive',
         'fzf',
-        'neo-tree',
+        neotree_extension(),
         'quickfix',
         'trouble',
       }

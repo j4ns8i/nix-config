@@ -31,7 +31,6 @@ local function reveal_file_or_cwd()
   })
 end
 
-
 return {
   {
     'nvim-neo-tree/neo-tree.nvim',

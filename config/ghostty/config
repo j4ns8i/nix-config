@@ -4,10 +4,11 @@ theme = "black-metal-nile"
 title = " "
 window-padding-x = 8
 mouse-hide-while-typing = true
-font-thicken = true
-font-thicken-strength = 64
 keybind = alt+left=unbind
 keybind = alt+right=unbind
 split-divider-color = #333333
+
+keybind = ctrl+page_down=next_tab
+keybind = ctrl+page_up=previous_tab
 
 # vim: set ft=toml :
