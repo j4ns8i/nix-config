@@ -70,6 +70,7 @@
     {
       darwinConfigurations = {
         yuzu = mkDarwin "yuzu" "aarch64-darwin";
+        justinsmalkowski-YJ0VNX32G2 = mkDarwin "apogee" "aarch64-darwin";
       };
       nixosConfigurations = {
         laptar-2 = mkNixos "laptar" "x86_64-linux";
