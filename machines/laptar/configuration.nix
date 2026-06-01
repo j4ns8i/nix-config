@@ -8,7 +8,8 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.luks.devices."luks-e36709a4-36aa-4551-b6db-f007b53a82c6".device = "/dev/disk/by-uuid/e36709a4-36aa-4551-b6db-f007b53a82c6";
+  boot.initrd.luks.devices."luks-e36709a4-36aa-4551-b6db-f007b53a82c6".device =
+    "/dev/disk/by-uuid/e36709a4-36aa-4551-b6db-f007b53a82c6";
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -114,7 +115,10 @@
   users.users."${config.dotfiles.general.username}" = {
     isNormalUser = true;
     description = "Justin Smalkowski";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     shell = pkgs.zsh;
   };
 
@@ -159,6 +163,9 @@
     rustup
     busybox
     virt-manager
+    tree-sitter
+    pnpm
+    nodejs
 
     # apps
     firefox
@@ -216,8 +223,16 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.trusted-users = [ "root" config.dotfiles.general.username ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
+  nix.settings.trusted-users = [
+    "root"
+    config.dotfiles.general.username
+  ];
+
   networking.hostName = config.dotfiles.general.hostname;
 
 }
