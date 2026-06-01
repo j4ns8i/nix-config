@@ -13,6 +13,11 @@ return {
       desc = "Close Trouble",
     },
     {
+      '<leader>xD',
+      function() require('trouble').open('lsp_definitions') end,
+      desc = "Close Trouble",
+    },
+    {
       '<leader>xC',
       function() require('trouble').open('lsp_incoming_calls') end,
       desc = "LSP Incoming Calls",

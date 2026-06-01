@@ -32,6 +32,7 @@ return {
       filetypes_allowlist = filetypes,
       filetypes_denylist = {},
       min_count_to_highlight = 2,
+      providers = {'lsp', 'regex'},
     }
     require('illuminate').configure(opts)
   end

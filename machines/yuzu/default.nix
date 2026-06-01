@@ -55,6 +55,7 @@
           "coreutils"
           "ctags"
           "delta"
+          "ffmpeg"
           "file"
           "fontconfig"
           "freetype"
@@ -153,6 +154,7 @@
           "xz"
           "yazi"
           "yq"
+          "yt-dlp"
           "zstd"
         ];
 
@@ -167,6 +169,7 @@
           "obsidian"
           "slack"
           "spotify"
+          "betterdisplay"
         ];
       };
     };
