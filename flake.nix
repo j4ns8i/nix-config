@@ -15,6 +15,7 @@
     inputs@{
       home-manager,
       darwin,
+      nixpkgs,
       ...
     }:
     let
@@ -45,10 +46,33 @@
             )
           ];
         };
+      mkNixos =
+        name: system:
+        nixpkgs.lib.nixosSystem {
+          system = system;
+          modules = [
+            ./modules/dotfiles
+            ./machines/${name}
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = false;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.sharedModules = [
+                ./modules/dotfiles
+                ./machines/${name}/dotfiles.nix
+              ];
+              home-manager.users.j4ns8i = ./modules/home-manager;
+            }
+          ];
+        };
     in
     {
       darwinConfigurations = {
         yuzu = mkDarwin "yuzu" "aarch64-darwin";
+      };
+      nixosConfigurations = {
+        laptar-2 = mkNixos "laptar" "x86_64-linux";
       };
     };
 }
