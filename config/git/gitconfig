@@ -4,6 +4,7 @@
 [interactive]
     diffFilter = delta --color-only
 [delta]
+    file-style = omit
     navigate = true
     syntax-theme = base16
     diff-so-fancy = true
@@ -22,6 +23,10 @@
     algorithm = histogram
     mnemonicPrefix = true # for (i)ndex, (w)orktree, (c)ommit, and (o)bject prefixes to file names
     renames = true
+    tool = nvimdiff
+[difftool.nvimdiff]
+    cmd = nvim -d -c 'setlocal readonly nomodifiable | let b:nolsp = 1 | wincmd l' $LOCAL $REMOTE
+    trustExitCode = true
 [commit]
     verbose = true # include diff in commit message editor
 [rebase]
@@ -94,6 +99,7 @@
     defaultBranch = main
 [merge]
     conflictstyle = zdiff3
+    tool = nvimdiff
 [mergetool]
     prompt = false
 [mergetool.nvimdiff]
