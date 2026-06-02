@@ -8,6 +8,20 @@ local function setup_diagnostic()
   vim.keymap.set('n', '<M-j>', function() vim.diagnostic.jump({ count = 1, float = true }) end)
 end
 
+--Override the vim.lsp.start hook to skip starting if b:nolsp is set.
+--
+--Consider setting b:nolsp when LSP clients are distracting, such as `git difftool`.
+local function setup_lsp_start()
+  local orig_start = vim.lsp.start
+  vim.lsp.start = function(cfg, opts) ---@diagnostic disable-line: duplicate-set-field
+    local bufnr = (opts and opts.bufnr) or 0
+    if vim.b[bufnr].nolsp then
+      return
+    end
+    orig_start(cfg, opts)
+  end
+end
+
 local function config()
   vim.lsp.enable({
     'ansiblels',
@@ -53,6 +67,7 @@ local function config()
   )
 
   setup_diagnostic()
+  setup_lsp_start()
 end
 
 config()
