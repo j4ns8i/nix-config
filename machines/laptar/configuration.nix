@@ -118,6 +118,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "libvirtd"
     ];
     shell = pkgs.zsh;
   };
@@ -162,10 +163,12 @@
     go
     rustup
     busybox
-    virt-manager
     tree-sitter
     pnpm
     nodejs
+    tlp
+    file
+    opencode
 
     # apps
     firefox
@@ -195,6 +198,11 @@
     enable = true;
     package = pkgs.mullvad-vpn;
   };
+
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
+  networking.firewall.trustedInterfaces = [ "virbr0" ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -235,6 +243,15 @@
 
   networking.hostName = config.dotfiles.general.hostname;
 
+  services.power-profiles-daemon.enable = false;
+  services.tlp = {
+    enable = true;
+    settings = {
+      START_CHARGE_THRESH_BAT0 = 75;
+      STOP_CHARGE_THRESH_BAT0 = 80;
+      RESTORE_THRESHOLDS_ON_BAT = 1;
+    };
+  };
 }
 
 # vim: set sw=2 :
