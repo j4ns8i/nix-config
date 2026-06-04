@@ -4,6 +4,9 @@
 
 { config, pkgs, ... }:
 
+let
+  interfaceEthName = "enp4s0f3u1c2";
+in
 {
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -17,6 +20,13 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  networking.networkmanager.unmanaged = [
+    "interface-name:br0"
+    "interface-name:${interfaceEthName}"
+  ];
+  networking.bridges.br0.interfaces = [ "${interfaceEthName}" ];
+  networking.interfaces.br0.useDHCP = true;
+  networking.interfaces.${interfaceEthName}.useDHCP = false;
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -200,7 +210,10 @@
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
-  networking.firewall.trustedInterfaces = [ "virbr0" ];
+  networking.firewall.trustedInterfaces = [
+    "virbr0"
+    "br0"
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
