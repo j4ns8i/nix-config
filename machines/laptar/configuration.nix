@@ -20,55 +20,80 @@ in
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
-  networking.networkmanager.ensureProfiles.profiles = {
-    br0 = {
-      connection = {
-        id = "br0";
-        type = "bridge";
-        interface-name = "br0";
-        autoconnect = true;
-        autoconnect-priority = 100;
-        autoconnect-slaves = 1;
-      };
-      bridge = { };
-      ipv4.method = "disabled";
-      ipv6.method = "ignore";
-    };
-    "br0-slave-${interfaceEthName}" = {
-      connection = {
-        id = "br0-slave-${interfaceEthName}";
-        type = "ethernet";
-        interface-name = interfaceEthName;
-        master = "br0";
-        slave-type = "bridge";
-        autoconnect = true;
-        autoconnect-priority = 100;
-      };
-      ethernet = { };
-      ipv4.method = "disabled";
-      ipv6.method = "ignore";
-    };
-    "Wired connection 1" = {
-      connection = {
-        id = "Wired connection 1";
-        interface-name = interfaceEthName;
-        autoconnect = false;
-        type = "ethernet";
-      };
-    };
-    wifi = {
-      connection = {
-        id = "${interfaceWifiName}";
-        type = "wifi";
-        interface-name = interfaceWifiName;
-        autoconnect = true;
-        autoconnect-priority = 10;
-      };
-      ipv4.route-metric = 600;
-      ipv6.route-metric = 600;
+  networking.networkmanager.enable = false;
+  networking.useNetworkd = true;
+  networking.useDHCP = false;
+
+  systemd.network.enable = true;
+
+  systemd.network.netdevs."10-br0" = {
+    netdevConfig = {
+      Kind = "bridge";
+      Name = "br0";
     };
   };
+
+  systemd.network.networks."10-eth0" = {
+    matchConfig.Name = "enp4s0f3u1c2";
+    networkConfig.Bridge = "br0";
+    linkConfig.RequiredForOnline = "carrier";
+  };
+
+  systemd.network.networks."20-br0" = {
+    matchConfig.Name = "br0";
+    networkConfig.DHCP = "yes";
+    dhcpV4Config.RouteMetric = 100;
+    linkConfig.RequiredForOnline = "routable";
+  };
+
+  systemd.network.networks."30-wlan0" = {
+    matchConfig.Name = "wlp3s0";
+    networkConfig.DHCP = "yes";
+    dhcpV4Config.RouteMetric = 600;
+    linkConfig.RequiredForOnline = "no";
+  };
+
+  networking.wireless = {
+    enable = true;
+    interfaces = [ "wlp3s0" ];
+    secretsFile = "/etc/wpa_supplicant/wlan.conf";
+    networks."SmallHouseSki Mesh" = {
+      pskRaw = "ext:psk";
+      # psk = "753Zhj!2G4k9rcYH$UG9";
+    };
+  };
+
+  systemd.services.wait-for-ethernet = {
+    before = [ "libvirt-start-haos.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "wait-for-br0" ''
+        while ! ${pkgs.iproute2}/bin/ip -4 addr show dev br0 | grep -q "inet "; do
+          sleep 1
+        done
+      '';
+    };
+  };
+
+  systemd.services.libvirt-start-haos = {
+    after = [
+      "wait-for-ethernet.service"
+      "libvirtd.service"
+    ];
+    requires = [
+      "wait-for-ethernet.service"
+      "libvirtd.service"
+    ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.libvirt}/bin/virsh --connect qemu:///system start haos";
+    };
+  };
+
+  systemd.services.libvirt-guests.enable = false;
 
   # Set your time zone.
   time.timeZone = "America/New_York";
