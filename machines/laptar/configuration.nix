@@ -6,6 +6,7 @@
 
 let
   interfaceEthName = "enp4s0f3u1c2";
+  interfaceWifiName = "wlp3s0";
 in
 {
   # Bootloader.
@@ -20,13 +21,54 @@ in
 
   # Enable networking
   networking.networkmanager.enable = true;
-  networking.networkmanager.unmanaged = [
-    "interface-name:br0"
-    "interface-name:${interfaceEthName}"
-  ];
-  networking.bridges.br0.interfaces = [ "${interfaceEthName}" ];
-  networking.interfaces.br0.useDHCP = true;
-  networking.interfaces.${interfaceEthName}.useDHCP = false;
+  networking.networkmanager.ensureProfiles.profiles = {
+    br0 = {
+      connection = {
+        id = "br0";
+        type = "bridge";
+        interface-name = "br0";
+        autoconnect = true;
+        autoconnect-priority = 100;
+        autoconnect-slaves = 1;
+      };
+      bridge = { };
+      ipv4.method = "disabled";
+      ipv6.method = "ignore";
+    };
+    "br0-slave-${interfaceEthName}" = {
+      connection = {
+        id = "br0-slave-${interfaceEthName}";
+        type = "ethernet";
+        interface-name = interfaceEthName;
+        master = "br0";
+        slave-type = "bridge";
+        autoconnect = true;
+        autoconnect-priority = 100;
+      };
+      ethernet = { };
+      ipv4.method = "disabled";
+      ipv6.method = "ignore";
+    };
+    "Wired connection 1" = {
+      connection = {
+        id = "Wired connection 1";
+        interface-name = interfaceEthName;
+        autoconnect = false;
+        type = "ethernet";
+      };
+    };
+    wifi = {
+      connection = {
+        id = "${interfaceWifiName}";
+        type = "wifi";
+        interface-name = interfaceWifiName;
+        autoconnect = true;
+        autoconnect-priority = 10;
+      };
+      ipv4.route-metric = 600;
+      ipv6.route-metric = 600;
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "America/New_York";
