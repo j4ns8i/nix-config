@@ -7,6 +7,8 @@
 let
   interfaceEthName = "enp4s0f3u1c2";
   interfaceWifiName = "wlp3s0";
+  zWaveDeviceUnit = "dev-serial-by\\x2did-usb\\x2dNabu_Casa_ZWA\\x2d2_80B54EE0D590\\x2dif00.device";
+  zigbeeDeviceUnit = "dev-serial-by\\x2did-usb\\x2dNabu_Casa_ZBT\\x2d2_DCB4D910E280\\x2dif00.device";
 in
 {
   # Bootloader.
@@ -244,13 +246,34 @@ in
     enableCompletion = true;
   };
 
+  environment.sessionVariables.LIBVIRT_DEFAULT_URI = "qemu:///system";
+
   services.mullvad-vpn = {
     enable = true;
-    package = pkgs.mullvad-vpn;
+    gui.enable = true;
   };
 
-  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd = {
+    enable = true;
+    onShutdown = "shutdown";
+  };
   programs.virt-manager.enable = true;
+
+  systemd.services.libvirt-guests = {
+    overrideStrategy = "asDropinIfExists";
+    environment = {
+      URIS = "default qemu:///system";
+    };
+    wants = [
+      zWaveDeviceUnit
+      zigbeeDeviceUnit
+      "network-online.target"
+    ];
+    after = [
+      zWaveDeviceUnit
+      zigbeeDeviceUnit
+    ];
+  };
 
   networking.firewall.trustedInterfaces = [
     "virbr0"
@@ -268,7 +291,7 @@ in
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
